@@ -1,0 +1,50 @@
+# Intended for use benchmarking Hammerspace DSX mounted NFS storage
+# Notes: 
+#   You MUST specify bs and iodepth in order for fioplot to be able to parse the results
+#   If you get errors when running fioplot similar to File "/opt/homebrew/lib/python3.11/site-packages/fio_plot/fiolib/jsonparsing_support.py", line 99, in get_json_mapping
+#   "bs": record["job options"]["bs"] it means that you are missing an test option that it needs.
+#   There may be ways around this in fioplot, I haven't found it yet.    
+#
+# 10/16/24 - Commented out target directory, now passed in test script.
+
+[global]
+# ioengine defines how IO is issued to the
+ioengine=libaio
+# Reporting related
+stonewall
+group_reporting
+time_based
+# job config
+direct=1
+runtime=300
+numjobs=2
+iodepth=16
+fsync=1
+size=15GB
+# The below path is the default used by the script when testing external NFS storage volumes.
+# directory=/mnt/test/fio
+
+# DSX local and NFS tests
+[seq-read]
+rw=read
+bs=8k
+
+[seq-write]
+rw=write
+bs=8k
+
+[seq-rw]
+rw=rw
+bs=4k
+
+[rand-read]
+rw=randread
+bs=8k
+
+[rand-write]
+rw=randwrite
+bs=8k
+
+[rand-rw]
+rw=randrw
+bs=4k

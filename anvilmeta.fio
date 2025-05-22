@@ -1,0 +1,49 @@
+# Intended for use benchmarking Hammerspace Anvil metadata disks
+# Notes: 
+#   You MUST specify bs and iodepth in order for fioplot to be able to parse the results
+#   If you get errors when running fioplot similar to File "/opt/homebrew/lib/python3.11/site-packages/fio_plot/fiolib/jsonparsing_support.py", line 99, in get_json_mapping
+#   "bs": record["job options"]["bs"] it means that you are missing an test option that it needs.
+#   There may be ways around this in fioplot, I haven't found it yet.    
+#
+
+[global]
+# ioengine defines how IO is issued to the
+ioengine=psync
+# Reporting related
+stonewall
+group_reporting
+time_based
+# job config
+direct=1
+runtime=300
+numjobs=1
+iodepth=1
+fsync=1
+size=15GB
+# Target directory on the Anvil, CHANGE THIS to reflect the actual path
+directory=/pd/fio
+
+# Anvil metadata tests
+[seq-read]
+rw=read
+bs=25k
+
+[seq-write]
+rw=write
+bs=25k
+
+[seq-rw]
+rw=rw
+bs=4k
+
+[rand-read]
+rw=randread
+bs=25k
+
+[rand-write]
+rw=randwrite
+bs=25k
+
+[rand-rw]
+rw=randrw
+bs=4k
